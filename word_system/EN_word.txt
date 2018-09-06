@@ -1,0 +1,3 @@
+﻿{"document":"文件",
+"window":"視窗",
+"history" :"歷史紀錄"}
