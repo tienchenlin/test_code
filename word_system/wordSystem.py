@@ -21,7 +21,7 @@ def readData():
             else:
                 return dict()
     else:
-        with open('EN_word.txt','a',encoding = 'utf-8-sig') as f:
+        #with open('EN_word.txt','w',encoding = 'utf-8-sig') as f:
             return dict()
 
 def allData():
