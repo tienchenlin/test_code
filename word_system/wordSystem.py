@@ -32,7 +32,9 @@ def inputData():
             print(f"{newWord} 單字已重複")
             continue
         translation = input("請輸入翻譯:\n")
-        sqlstr = f"insert into table01 values('{newWord}','{translation}');"
+        sqlstr = "INSERT INTO table01 VALUES ({},{})" .format(newWord, translation)
+        #f"update table01 set trans='{translation}' where word = '{newWord}'"
+        #f'insert into table01(word,trans) values("{newWord}","{translation}")'
         conn.execute(sqlstr)
         conn.commit()
         print("單字已儲存")
@@ -66,6 +68,7 @@ def editData():
 import os,sqlite3
 
 conn = sqlite3.connect('en_totw.sqlite')
+#cur =conn.cursor()
 while True:
     try:
         mune()
