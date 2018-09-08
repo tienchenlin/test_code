@@ -11,12 +11,17 @@ def mune():
     print("==================")
 
 def readData():
-    with open("EN_word.txt", "r", encoding = "UTF-8-sig") as f:
-        wordData = f.read()
-        if wordData != "":
-            data = ast.literal_eval(wordData)
-            return data
-        else:
+    if os.path.exists('EN_word.txt'):
+
+        with open("EN_word.txt", "r", encoding = "UTF-8-sig") as f:
+            wordData = f.read()
+            if wordData != "":
+                data = ast.literal_eval(wordData)
+                return data
+            else:
+                return dict()
+    else:
+        with open('EN_word.txt','a',encoding = 'utf-8-sig') as f:
             return dict()
 
 def allData():
@@ -71,17 +76,20 @@ data = dict()
 data = readData()
 
 while True:
-    mune()
+    try:
+        mune()
 
-    option = int(input("請輸入你的選擇: "))
+        option = int(input("請輸入你的選擇: "))
 
-    if option == 1:
-        inputData()
-    elif option == 2:
-        allData()
-    elif option == 3:
-        editData()
-    else:
+        if option == 1:
+            inputData()
+        elif option == 2:
+            allData()
+        elif option == 3:
+            editData()
+        else:
+            break
+    except:
         break
 
 print("程式已關閉") 
