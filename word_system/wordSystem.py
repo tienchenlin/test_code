@@ -10,40 +10,31 @@ def mune():
     print("0. 結束系統")
     print("==================")
 
-def readData():
-    if os.path.exists('EN_word.txt'):
-
-        with open("EN_word.txt", "r", encoding = "UTF-8-sig") as f:
-            wordData = f.read()
-            if wordData != "":
-                data = ast.literal_eval(wordData)
-                return data
-            else:
-                return dict()
-    else:
-        #with open('EN_word.txt','w',encoding = 'utf-8-sig') as f:
-            return dict()
-
 def allData():
+
+    cursor = conn.execute('select * from table01')
     print(f"單字\t翻譯")
     print("==================")
-    for row in data:
-        print(f"{row:10}{data[row]:10}")
+    for row in cursor:
+        print(f"{row[0]:10}{row[1]:10}")
     print("==================")
     input("按任意鍵返回主選單")
 
 def inputData():
     while True:
         newWord = input("請輸入新單字or按Enter返回主選單:\n")
-        if newWord == "":
-            break
-        elif newWord in data:
+        if newWord == "": break
+        sqlstr = f"select * from table01 where word='{newWord}'"
+        cursor = conn.execute(sqlstr)
+        row = cursor.fetchone()
+        print(row)
+        if not row==None:
             print(f"{newWord} 單字已重複")
             continue
         translation = input("請輸入翻譯:\n")
-        data[newWord] = translation
-        with open("EN_word.txt", "w",encoding = "UTF-8-sig") as f:
-            f.write(str(data))
+        sqlstr = f"insert into table01 values('{newWord}','{translation}');"
+        conn.execute(sqlstr)
+        conn.commit()
         print("單字已儲存")
 
 
@@ -51,17 +42,20 @@ def editData():
     while True:
         editWord = input("請輸入想修改的單字or按Enter返回主選單: \n單字: ")
         if editWord == "": break
-        elif editWord not in data:
+        sqlstr = f"select * from table01 where word = '{editWord}'"
+        cursor = conn.execute(sqlstr)
+        row = cursor.fetchone()
+        if row == None:
             print(f"{editWord} 單字不存在")    
-        elif editWord in data:
-            print("舊翻譯:", data[editWord])
+        elif editWord in row:
+            print("舊翻譯:", row[1])
             edtrans = input("請輸入修改翻譯:\n")
+            sqlstr = f"update table01 set trans='{edtrans}' where word = '{editWord}'"
+            conn.execute(sqlstr)
+            conn.commit()
             if edtrans == "":
                 print("請重新輸入單字")
                 continue
-            data[editWord] = edtrans
-            with open("EN_word.txt", "w",encoding = "UTF-8-sig") as f:
-                f.write(str(data))
             print("單字翻譯已修改")
 
 
@@ -69,12 +63,9 @@ def editData():
 
 ###主程式###
 
-import os,ast
+import os,sqlite3
 
-data = dict()
-
-data = readData()
-
+conn = sqlite3.connect('en_totw.sqlite')
 while True:
     try:
         mune()
@@ -91,5 +82,7 @@ while True:
             break
     except:
         break
+
+conn.close()
 
 print("程式已關閉") 
