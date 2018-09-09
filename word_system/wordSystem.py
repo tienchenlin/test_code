@@ -10,8 +10,8 @@ def mune():
     print("3. 修改翻譯")
     print("0. 結束系統")
     print("==================")
-    print(os.getcwd())
-
+    #print(ws_dir)
+    
 def allData():
 
     cursor = conn.execute('select * from table01')
@@ -65,12 +65,14 @@ def editData():
 
 ###主程式###
 
-import os,sqlite3
+import os,sqlite3,os.path
 
-os.getcwd()
-os.chdir('D:\\git_work\\word_system')
+ws_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(ws_dir)
 
-conn = sqlite3.connect('D:\\git_work\\word_system\\en_totw.sqlite')
+
+
+conn = sqlite3.connect( ws_dir + '\\' + 'en_totw.sqlite')
 #cur =conn.cursor()
 while True:
     try:
