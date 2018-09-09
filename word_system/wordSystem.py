@@ -2,6 +2,7 @@
 
 def mune():
     os.system("cls")
+    
     print("單字卡系統")
     print("==================")
     print("1. 新增單字")
@@ -9,6 +10,7 @@ def mune():
     print("3. 修改翻譯")
     print("0. 結束系統")
     print("==================")
+    print(os.getcwd())
 
 def allData():
 
@@ -32,9 +34,7 @@ def inputData():
             print(f"{newWord} 單字已重複")
             continue
         translation = input("請輸入翻譯:\n")
-        sqlstr = "INSERT INTO table01 VALUES ({},{})" .format(newWord, translation)
-        #f"update table01 set trans='{translation}' where word = '{newWord}'"
-        #f'insert into table01(word,trans) values("{newWord}","{translation}")'
+        sqlstr = f'insert into table01 values("{newWord}","{translation}")'
         conn.execute(sqlstr)
         conn.commit()
         print("單字已儲存")
@@ -67,7 +67,10 @@ def editData():
 
 import os,sqlite3
 
-conn = sqlite3.connect('en_totw.sqlite')
+os.getcwd()
+os.chdir('D:\\git_work\\word_system')
+
+conn = sqlite3.connect('D:\\git_work\\word_system\\en_totw.sqlite')
 #cur =conn.cursor()
 while True:
     try:
